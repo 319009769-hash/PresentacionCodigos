@@ -1,0 +1,454 @@
+RASPADO
+Private Sub Binaria_Click()
+    Dim valorBuscado As Integer
+    Dim resultado As Integer
+
+    ' Leer el valor a buscar ingresado por el usuario
+    valorBuscado = InputBox("Introduce el valor que deseas buscar:")
+
+    ' Realizar la búsqueda binaria en el rango ordenado desde D3 hasta la última celda con datos en la columna D
+    resultado = BusquedaBinaria(Range("D3:D" & Cells(Rows.Count, 4).End(xlUp).Row), valorBuscado)
+
+    ' Mostrar resultado
+    If resultado = -1 Then
+        MsgBox "Valor no encontrado en el rango especificado."
+    Else
+        MsgBox "Valor encontrado en la celda: D" & resultado + 3
+    End If
+End Sub
+
+Function BusquedaBinaria(rango As Range, valor As Integer) As Integer
+    Dim izquierda As Integer
+    Dim derecha As Integer
+    Dim medio As Integer
+    Dim arreglo() As Variant
+
+    ' Inicializar límites
+    izquierda = 1
+    derecha = rango.Cells.Count
+
+    ' Convertir el rango a un arreglo
+    arreglo = rango.Value
+
+    ' Realizar búsqueda binaria
+    Do While izquierda <= derecha
+        medio = (izquierda + derecha) \ 2
+        If arreglo(medio, 1) = valor Then
+            BusquedaBinaria = medio - 1
+            Exit Function
+        ElseIf arreglo(medio, 1) < valor Then
+            izquierda = medio + 1
+        Else
+            derecha = medio - 1
+        End If
+    Loop
+
+    ' Si no se encuentra el valor, retornar -1
+    BusquedaBinaria = -1
+End Function
+Private Sub Borrar_Click()
+    Dim ultimaFila As Long
+    Dim respuesta As VbMsgBoxResult
+
+    ' Mostrar mensaje de confirmación
+    respuesta = MsgBox("¿Estás seguro que deseas Bombardear todo?", vbYesNo + vbQuestion, "Confirmación de Bombardeo")
+
+    ' Si el usuario elige "Sí", proceder con el borrado
+    If respuesta = vbYes Then
+        ' Determinar la última fila ocupada en las columnas A, B, C y D
+        ultimaFila = Application.WorksheetFunction.Max(Cells(Rows.Count, 1).End(xlUp).Row, Cells(Rows.Count, 2).End(xlUp).Row, Cells(Rows.Count, 3).End(xlUp).Row, Cells(Rows.Count, 4).End(xlUp).Row)
+
+        ' Borrar contenidos en el rango desde A1 hasta D en la última fila ocupada
+        Range("A1:D" & ultimaFila).ClearContents
+        MsgBox "Contenido Bombardeado, tenga un buen dia", vbInformation, "Bombardeo Completo"
+    Else
+        MsgBox "Bombardeo cancelado :'c", vbInformation, "Operación Cancelada"
+    End If
+End Sub
+Private Sub Buble_Click()
+    Dim ultimaFila As Long
+
+    ' Determinar la última fila ocupada en las columnas A, B, C y D
+    ultimaFila = Application.WorksheetFunction.Max(Cells(Rows.Count, 3).End(xlUp).Row, Cells(Rows.Count, 4).End(xlUp).Row)
+
+    ' Borrar contenidos en el rango desde A1 hasta D en la última fila ocupada
+    Range("C3:D" & ultimaFila).ClearContents
+
+Dim n, i, j, arr(), temp As Integer
+'leer tamanio del arreglo ingresado por el usuario
+n = Range("b1").Value
+ReDim arr(n - 1)
+' Llenar el arreglo con números aleatorios
+For i = 0 To n - 1
+    arr(i) = Int(100 * Rnd()) + 1
+Next i
+'Muestra los elementos del arreglo
+For i = 0 To n - 1
+    ActiveSheet.Cells(i + 3, 3).Value = arr(i)
+Next i
+' Bubble Sort
+For i = 0 To n - 2
+    For j = 0 To n - i - 2
+        If arr(j) > arr(j + 1) Then
+            temp = arr(j)
+            arr(j) = arr(j + 1)
+            arr(j + 1) = temp
+        End If
+    Next j
+Next i
+' Muestra los elementos ordenados del arreglo
+For i = 0 To n - 1
+    ActiveSheet.Cells(i + 3, 4).Value = arr(i)
+Next i
+End Sub
+Private Sub Insertion_Click()
+    Dim ultimaFila As Long
+
+    ' Determinar la última fila ocupada en las columnas A, B, C y D
+    ultimaFila = Application.WorksheetFunction.Max(Cells(Rows.Count, 3).End(xlUp).Row, Cells(Rows.Count, 4).End(xlUp).Row)
+
+    ' Borrar contenidos en el rango desde A1 hasta D en la última fila ocupada
+    Range("C3:D" & ultimaFila).ClearContents
+
+
+Dim n As Integer, i As Integer, j As Integer, arr() As Integer, key As Integer
+' Leer tamaño del arreglo ingresado por el usuario
+n = Range("b1").Value
+ReDim arr(n - 1)
+' Llenar el arreglo con números aleatorios
+For i = 0 To n - 1
+    arr(i) = Int(100 * Rnd()) + 1
+Next i
+' Muestra los elementos del arreglo
+For i = 0 To n - 1
+    ActiveSheet.Cells(i + 3, 3).Value = arr(i)
+Next i
+' Insertion Sort
+For i = 1 To n - 1
+    key = arr(i)
+    j = i - 1
+    Do While j >= 0
+        If arr(j) > key Then
+            arr(j + 1) = arr(j)
+        Else
+            Exit Do
+        End If
+        j = j - 1
+    Loop
+    arr(j + 1) = key
+Next i
+' Muestra los elementos ordenados del arreglo
+For i = 0 To n - 1
+    ActiveSheet.Cells(i + 3, 4).Value = arr(i)
+Next i
+
+End Sub
+Private Sub Lineal_Click()
+Dim valorBuscado As Integer
+Dim celda As Range
+Dim encontrado As Boolean
+
+
+' Leer el valor a buscar ingresado por el usuario
+valorBuscado = InputBox("Introduce el valor que deseas buscar:")
+
+' Inicializar la variable de encontrado
+encontrado = False
+
+' Buscar en el rango desde D3 hasta el final de los datos en la columna D
+For Each celda In Range("D3:D" & Cells(Rows.Count, 4).End(xlUp).Row)
+    If celda.Value = valorBuscado Then
+        MsgBox "Valor encontrado en la celda: " & celda.Address
+        encontrado = True
+        Exit For
+    End If
+Next celda
+
+' Si no se encuentra el valor
+If Not encontrado Then
+    MsgBox "Valor no encontrado en el rango especificado."
+End If
+End Sub
+Private Sub OrdenarMerge_Click()
+    Dim ultimaFila As Long
+
+    ' Determinar la última fila ocupada en las columnas A, B, C y D
+    ultimaFila = Application.WorksheetFunction.Max(Cells(Rows.Count, 3).End(xlUp).Row, Cells(Rows.Count, 4).End(xlUp).Row)
+
+    ' Borrar contenidos en el rango desde A1 hasta D en la última fila ocupada
+    Range("C3:D" & ultimaFila).ClearContents
+
+    Dim tamanio As Integer, arreglo() As Integer
+    ' Leer tamaño del arreglo ingresado por el usuario
+    tamanio = Range("b1").Value
+    ReDim arreglo(tamanio - 1)
+    ' Llenar el arreglo con números aleatorios
+    For i = 0 To tamanio - 1
+        arreglo(i) = Int(100 * Rnd()) + 1
+    Next i
+    ' Muestra los elementos del arreglo
+    For i = 0 To tamanio - 1
+        ActiveSheet.Cells(i + 3, 3).Value = arreglo(i)
+    Next i
+    ' Llamar a MergeSort
+    MergeSort arreglo, 0, tamanio - 1
+    ' Muestra los elementos ordenados del arreglo
+    For i = 0 To tamanio - 1
+        ActiveSheet.Cells(i + 3, 4).Value = arreglo(i)
+    Next i
+End Sub
+
+Sub MergeSort(ByRef arreglo() As Integer, ByVal izquierda As Integer, ByVal derecha As Integer)
+    Dim medio As Integer
+    If izquierda < derecha Then
+        medio = (izquierda + derecha) \ 2
+        MergeSort arreglo, izquierda, medio
+        MergeSort arreglo, medio + 1, derecha
+        Mezclar arreglo, izquierda, medio, derecha
+    End If
+End Sub
+
+Sub Mezclar(ByRef arreglo() As Integer, ByVal izquierda As Integer, ByVal medio As Integer, ByVal derecha As Integer)
+    Dim tamIzquierda As Integer, tamDerecha As Integer
+    Dim i As Integer, j As Integer, k As Integer
+    Dim arregloIzquierda() As Integer, arregloDerecha() As Integer
+
+    tamIzquierda = medio - izquierda + 1
+    tamDerecha = derecha - medio
+    ReDim arregloIzquierda(tamIzquierda - 1)
+    ReDim arregloDerecha(tamDerecha - 1)
+
+    For i = 0 To tamIzquierda - 1
+        arregloIzquierda(i) = arreglo(izquierda + i)
+    Next i
+
+    For j = 0 To tamDerecha - 1
+        arregloDerecha(j) = arreglo(medio + 1 + j)
+    Next j
+
+    i = 0
+    j = 0
+    k = izquierda
+
+    While i < tamIzquierda And j < tamDerecha
+        If arregloIzquierda(i) <= arregloDerecha(j) Then
+            arreglo(k) = arregloIzquierda(i)
+            i = i + 1
+        Else
+            arreglo(k) = arregloDerecha(j)
+            j = j + 1
+        End If
+        k = k + 1
+    Wend
+
+    While i < tamIzquierda
+        arreglo(k) = arregloIzquierda(i)
+        i = i + 1
+        k = k + 1
+    Wend
+
+    While j < tamDerecha
+        arreglo(k) = arregloDerecha(j)
+        j = j + 1
+        k = k + 1
+    Wend
+End Sub
+Private Sub Selection_Click()
+    Dim ultimaFila As Long
+
+    ' Determinar la última fila ocupada en las columnas A, B, C y D
+    ultimaFila = Application.WorksheetFunction.Max(Cells(Rows.Count, 3).End(xlUp).Row, Cells(Rows.Count, 4).End(xlUp).Row)
+
+    ' Borrar contenidos en el rango desde A1 hasta D en la última fila ocupada
+    Range("C3:D" & ultimaFila).ClearContents
+
+    Dim arr() As Integer
+
+    ' Leer tamaño del arreglo ingresado por el usuario
+    n = Range("b1").Value
+    ReDim arr(n - 1)
+    
+    ' Llenar el arreglo con números aleatorios
+    For i = 0 To n - 1
+        arr(i) = Int(100 * Rnd()) + 1
+    Next i
+    
+    ' Mostrar los elementos del arreglo antes de ordenar
+    Range("C3").Select
+    For i = 0 To n - 1
+        ActiveSheet.Cells(i + 3, 3).Value = arr(i)
+    Next i
+    
+    ' Algoritmo Selection Sort
+    For i = 0 To n - 2
+        minIdx = i
+        For j = i + 1 To n - 1
+            If arr(j) < arr(minIdx) Then
+                minIdx = j
+            End If
+        Next j
+        If minIdx <> i Then
+            temp = arr(i)
+            arr(i) = arr(minIdx)
+            arr(minIdx) = temp
+        End If
+    Next i
+    
+    ' Mostrar los elementos del arreglo después de ordenar
+    Range("D3").Select
+    For i = 0 To n - 1
+        ActiveSheet.Cells(i + 3, 4).Value = arr(i)
+    Next i
+End Sub
+
+Private Sub Hanoid_Click()
+        Dim cant_movs As Double
+        Dim discos As Double
+        Dim disco_a_mover As Double
+        Dim i As Long
+        Dim j As Long
+        Dim puede_mover As Integer
+        Dim t1 As Long
+        Dim t2 As Long
+        Dim torres(1 To 3, 1 To 10) As Double, cant_discos(1 To 3) As Long
+        
+        ' Pedir y validar cuantos discos colocar en la primer torre
+        discos = InputBox("Ingrese el numro de discos (1-8):")
+        While discos < 1 Or discos > 8
+            discos = InputBox("El numero de discos debe ser mayor a 0 y menor a 9:")
+        Wend
+        
+        ' Inicializar los datos
+        cant_discos(1) = discos
+        cant_discos(2) = 0
+        cant_discos(3) = 0
+        For i = 1 To discos
+            torres(1, i) = discos - i + 1
+        Next i
+        
+        ' Juegar!
+        cant_movs = 0
+        While cant_discos(3) <> discos
+            ' Limpiar las celdas
+            For i = 1 To 3
+                For j = 1 To 10
+                    Cells(j, i).Value = ""
+                Next j
+            Next i
+            
+            ' Dibujar las torres gemelas
+            For i = 1 To 3
+                Cells(1, i).Value = "Torre " & i
+                If cant_discos(i) = 0 Then
+                    Cells(2, i).Value = ""
+                Else
+                    For j = cant_discos(i) To 1 Step -1
+                        Select Case torres(i, j)
+                            Case 1
+                                Cells(j + 1, i).Value = "              XX               "
+                            Case 2
+                                Cells(j + 1, i).Value = "            XXXXXX             "
+                            Case 3
+                                Cells(j + 1, i).Value = "          XXXXXXXXXX           "
+                            Case 4
+                                Cells(j + 1, i).Value = "        XXXXXXXXXXXXXX         "
+                            Case 5
+                                Cells(j + 1, i).Value = "      XXXXXXXXXXXXXXXXXX       "
+                            Case 6
+                                Cells(j + 1, i).Value = "    XXXXXXXXXXXXXXXXXXXXXX     "
+                            Case 7
+                                Cells(j + 1, i).Value = "  XXXXXXXXXXXXXXXXXXXXXXXXXX   "
+                            Case 8
+                                Cells(j + 1, i).Value = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX "
+                        End Select
+                    Next j
+                End If
+            Next i
+            
+            ' Solicitar movimiento de tarjeta de credito
+            t1 = InputBox("Mover desde la torre (1-3):")
+            t2 = InputBox("hacia la torre (1-3):")
+            If t1 < 1 Or t1 > 3 Or t2 < 1 Or t2 > 3 Then
+                MsgBox "Movimiento invalido"
+            Else
+                If cant_discos(t1) = 0 Then
+                    MsgBox "Movimiento invalido"
+                Else
+                    disco_a_mover = torres(t1, cant_discos(t1))
+                    puede_mover = 1
+                    If cant_discos(t2) <> 0 Then
+                        If torres(t2, cant_discos(t2)) < disco_a_mover Then
+                            puede_mover = 0
+                        End If
+                    End If
+                    If puede_mover Then
+                        cant_movs = cant_movs + 1
+                        cant_discos(t2) = cant_discos(t2) + 1
+                        torres(t2, cant_discos(t2)) = disco_a_mover
+                        cant_discos(t1) = cant_discos(t1) - 1
+                    Else
+                        MsgBox "Movimiento invalido"
+                    End If
+                End If
+            End If
+        Wend
+        
+        ' Mostrar resultado
+        MsgBox "Juego finalizado en " & cant_movs & " movimientos!"
+End Sub
+
+Private Sub Quick_Click()
+    Dim ultimaFila As Long
+
+    ' Determinar la última fila ocupada en las columnas A, B, C y D
+    ultimaFila = Application.WorksheetFunction.Max(Cells(Rows.Count, 3).End(xlUp).Row, Cells(Rows.Count, 4).End(xlUp).Row)
+
+    ' Borrar contenidos en el rango desde A1 hasta D en la última fila ocupada
+    Range("C3:D" & ultimaFila).ClearContents
+
+    Dim n As Integer, arr() As Integer
+    ' Leer tamaño del arreglo ingresado por el usuario
+    n = Range("b1").Value
+    ReDim arr(n - 1)
+    ' Llenar el arreglo con números aleatorios
+    For i = 0 To n - 1
+        arr(i) = Int(100 * Rnd()) + 1
+    Next i
+    ' Muestra los elementos del arreglo
+    For i = 0 To n - 1
+        ActiveSheet.Cells(i + 3, 3).Value = arr(i)
+    Next i
+    ' Llamar a QuickSort
+    QuickSort arr, 0, n - 1
+    ' Muestra los elementos ordenados del arreglo
+    For i = 0 To n - 1
+        ActiveSheet.Cells(i + 3, 4).Value = arr(i)
+    Next i
+End Sub
+
+Sub QuickSort(ByRef arr() As Integer, ByVal low As Integer, ByVal high As Integer)
+    Dim pivotIndex As Integer
+    If low < high Then
+        pivotIndex = Partition(arr, low, high)
+        QuickSort arr, low, pivotIndex - 1
+        QuickSort arr, pivotIndex + 1, high
+    End If
+End Sub
+
+Function Partition(ByRef arr() As Integer, ByVal low As Integer, ByVal high As Integer) As Integer
+    Dim pivot As Integer, i As Integer, j As Integer, temp As Integer
+    pivot = arr(high)
+    i = low - 1
+    For j = low To high - 1
+        If arr(j) <= pivot Then
+            i = i + 1
+            temp = arr(i)
+            arr(i) = arr(j)
+            arr(j) = temp
+        End If
+    Next j
+    temp = arr(i + 1)
+    arr(i + 1) = arr(high)
+    arr(high) = temp
+    Partition = i + 1
+End Function

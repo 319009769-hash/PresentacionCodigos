@@ -1,0 +1,145 @@
+hola hallo
+
+adiós tschüss
+
+gracias danke
+
+trabajo arbeit
+
+dinero geld
+
+tiempo zeit
+
+amor liebe
+
+felicidad glück
+
+tristeza traurigkeit
+
+miedo angst
+
+sueño traum
+
+ciudad stadt
+
+país land
+
+mar meer
+
+montaña berg
+
+río fluss
+
+playa strand
+
+sol sonne
+
+luna mond
+
+estrella stern
+
+cielo himmel
+
+tierra erde
+
+fuego feuer
+
+aire luft
+
+árbol baum
+
+flor blume
+
+jardín garten
+
+camino weg
+
+carretera straße
+
+puente brücke
+
+tienda laden
+
+supermercado supermarkt
+
+hospital krankenhaus
+
+farmacia apotheke
+
+iglesia kirche
+
+parque park
+
+cine kino
+
+teatro theater
+
+museo museum
+
+biblioteca bibliothek
+
+oficina büro
+
+banco bank
+
+restaurante restaurant
+
+hotel hotel
+
+aeropuerto flughafen
+
+estación bahnhof
+
+puerto hafen
+
+mercado markt
+
+tienda geschäft
+
+panadería bäckerei
+
+carnicería metzgerei
+
+pescadería fischgeschäft
+
+frutería obstladen
+
+verdulería gemüseladen
+
+zapatería schuhladen
+
+peluquería friseur
+
+gimnasio fitnessstudio
+
+piscina schwimmbad
+
+estadio stadion
+
+cancha spielfeld
+
+pista bahn
+
+selva dschungel
+
+desierto wüste
+
+isla insel
+
+lago see
+
+volcán vulkan
+
+mariposa schmetterling
+
+abeja biene
+
+hormiga ameise
+
+araña spinne
+
+pájaro vogel
+
+pez fisch
+
+serpiente schlange

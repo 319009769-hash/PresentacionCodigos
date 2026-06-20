@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Metadatos: codificacion y titulo de la pagina -->
+    <meta charset="UTF-8">
+    <title>Portafolio - Luis Armando Gonzalez</title>
+    
+    <!-- Estilos internos (CSS) para diseño y maquetacion -->
+    <style>
+        /* Estilos globales del body */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f4f9;
+            color: #333;
+        }
+
+        /* ----- encabezado ----- */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #222;
+            color: white;
+            padding: 15px 30px;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+            font-family: 'Georgia', serif;
+            letter-spacing: 1px;
+            color: #00d1b2;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        nav a:hover {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* ----- secciones ----- */
+        section {
+            padding: 40px;
+            max-width: 900px;
+            margin: auto;
+        }
+        section h2 {
+            border-bottom: 2px solid #00d1b2;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+        }
+
+        /* ----- acerca de mi----- */
+        .aboutme {
+            text-align: center;
+        }
+        .aboutme img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid #00d1b2;
+            margin-bottom: 15px;
+        }
+
+        /* ----- habilidades ----- */
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .skill {
+            display: flex;
+            align-items: center;
+            background: beige;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            width: 200px;
+        }
+        .skill img {
+            width: 30px;
+            margin-right: 10px;
+        }
+
+        /* ----- proyectos ----- */
+        .projects ul {
+            list-style: square;
+            padding-left: 20px;
+        }
+        .projects li {
+            margin-bottom: 10px;
+        }
+
+        /* ----- recomendaciones ----- */
+        .Recomendaciones ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .Recomendaciones li {
+            background: white;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* ----- formulario ----- */
+        form {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        form input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        form button {
+            background: #00d1b2;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        form button:hover {
+            background: #009e8c;
+        }
+
+        /* ----- icono home ----- */
+        .home-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #00d1b2;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+        .home-icon img {
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Encabezado principal con nombre y navegacion -->
+    <header>
+        <!-- Titulo del portafolio / logo -->
+        <h1>Luis Armando Gonzalez</h1>
+        <nav>
+            <!-- Enlaces de navegacion interna -->
+            <!-- cambie lo que decia Recomendation a recomendaciones. Los demas los deje en ingles como un plus para la calificacion -->
+            <a href="#about">Acerca de</a>
+            <a href="#projects">Detalles del proyecto</a>
+            <a href="#skills">Habilidades</a>
+            <a href="#Recomendaciones">Recomendaciones</a>
+        </nav>
+    </header>
+
+    <!-- Seccion 'Acerca de mi con foto y descripcion personal -->
+    <section id="about" class="aboutme">
+        <h2>Acerca de mi</h2>
+        <!-- Foto de perfil cargada desde PostImage -->
+        <img src="https://i.postimg.cc/cJVs32NH/b2d7fcc6-4797-4e5d-ac42-7cd183f9456b.jpg" alt="Foto de perfil">
+        <h3>Luis Armando Gonzalez</h3>
+        <p>Soy estudiante de Matematicas Aplicadas y Computacion (MAC) por parte de la UNAM. Soy alguien apasionado por la tecnologia, el desarrollo web y la robotica. 
+             Me interesa aprender y aplicar nuevas herramientas digitales para resolver problemas practicos.</p>
+    </section>
+
+    <!-- Seccion de habilidades con iconos representativos -->
+    <section id="skills">
+        <h2>Habilidades</h2>
+        <div class="skills">
+            <div class="skill">
+                <!-- Icono de HTML5 -->
+                <img src="https://img.icons8.com/color/48/html-5.png" alt="HTML">
+                <span>HTML5</span>
+            </div>
+            <div class="skill">
+                <!-- Icono de CSS3 -->
+                <img src="https://img.icons8.com/color/48/css3.png" alt="CSS">
+                <span>CSS3</span>
+            </div>
+            <div class="skill">
+                <!-- Icono de JavaScript -->
+                <img src="https://img.icons8.com/color/48/javascript.png" alt="JS">
+                <span>JavaScript</span>
+            </div>
+            <div class="skill">
+                <!-- Icono de Python -->
+                <img src="https://img.icons8.com/color/48/python.png" alt="Python">
+                <span>Python</span>
+            </div>
+            <div class="skill">
+                <!-- Icono de C++-- -->
+                <img src="https://img.icons8.com/color/48/c-plus-plus-logo.png" alt="C++">
+                <span>C++</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seccion de proyectos realizados -->
+    <section id="projects" class="projects">
+        <h2>Detalles del proyecto</h2>
+        <ul>
+            <li>Desarrollo de un sistema web para gestion de inventario.</li>
+            <li>Programacion de un robot EV3 para evitar obstaculos.</li>
+            <li>Creacion de un dashboard interactivo con Python, Dash y Django.</li>
+        </ul>
+    </section>
+
+    <!-- Seccion de recomendaciones con lista y formulario de envio -->
+    <section id="Recomendaciones" class="Recomendaciones">
+        <h2>Notas</h2>
+        <span>Este espacio esta dedicado para comentarios hacia mi.</span>
+        <br>
+        <span> Tambien puede agregar algun comentario si asi lo desea.</span>
+        <!-- Lista donde se muestran las recomendaciones existentes -->
+        <ul id="recommendationList">
+            <li>"Agregar aun mas adornos para el front end."</li>
+            <li>"Potencial, pero falta orientarlo."</li>
+        </ul>
+
+        <!-- Formulario para añadir nuevas recomendaciones -->
+        <form id="recForm">
+            <input type="text" id="newRec" placeholder="Escribe una nueva recomendacion..." required>
+            <button type="submit">Añadir</button>
+        </form>
+    </section>
+
+    <!-- Boton fijo para volver al inicio de la pagina -->
+    <div class="home-icon" onclick="window.scrollTo({top:0, behavior:'smooth'});">
+        <img src="https://img.icons8.com/ios-filled/50/home.png" alt="Inicio">
+    </div>
+
+    <!-- Script JavaScript para gestionar el formulario de recomendaciones -->
+    <script>
+        // Escucha el evento de envio del formulario
+        document.getElementById("recForm").addEventListener("submit", function(e) {
+            e.preventDefault();  // Evita el comportamiento por defecto (recarga de pagina)
+            const newRec = document.getElementById("newRec").value;
+            if(newRec.trim() !== ""){
+                // Crea un nuevo elemento <li> y lo añade a la lista
+                const li = document.createElement("li");
+                li.textContent = '"' + newRec + '"';
+                document.getElementById("recommendationList").appendChild(li);
+                // Muestra alerta informativa
+                alert("Gracias por dejar una recomendacion\n Pero por ahora, no tengo un serviddor deicado para guardarla :c");
+                // Aqui limpia el campo de texto
+                document.getElementById("newRec").value = "";
+            }
+        });
+    </script>
+</body>
+</html>

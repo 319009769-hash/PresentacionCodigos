@@ -1,0 +1,530 @@
+PROYECTO METODOS DE ORDENAMIENTO Y BUSQUEDA      
+
+ALUMNO: LUIS ARMANDO GONZALEZ GONZALEZ
+DOCENTE: GARCIA ESPINOZA ARMANDO
+GRUPO: 1303
+
+
+Profesor, por favor, acepte este documento, soy el alumno al que se le quemo el pie, se me infecto y no he podido ir y apenas hoy en la noche me entere
+que la entrega fue hoy en la mañana
+Los avances y el proyecto lo salve en este block de notas, porque
+Office de Microsoft ya no lo ofrece la UNAM, y el que tenia pirateado lo actualizo Microsoft hace 5 días
+bloqueo mi acceso y tuve que rehacer insertion y búsqueda binaria
+No he podido reinstalar una version pirata, asi que esto es lo mejor que he podido hacer por el momento; por favor, aceptelo
+
+
+
+
+
+private Sub BusquedaBinaria_Click()
+    Dim n, i As Integer
+    Dim arr() As Integer
+    Dim valorBuscado As Integer
+    Dim resultado As Integer
+    
+    ' Leer tamaño del arreglo ingresado por el usuario
+    n = Range("B1").Value
+    ReDim arr(n - 1)
+    
+    ' Llenar el arreglo con números aleatorios y ordenarlos
+    For i = 0 To n - 1
+        arr(i) = Int(100 * Rnd()) + 1
+    Next i
+    
+    ' Ordenar el arreglo usando el método de inserción para asegurarse que esté ordenado
+    Call InsertionSort(arr)
+    
+    ' Mostrar los elementos del arreglo ordenado antes de la búsqueda
+    For i = 0 To n - 1
+        ActiveSheet.Cells(i + 3, 3).Value = arr(i)
+    Next i
+    
+    ' Solicitar al usuario el valor a buscar
+    valorBuscado = InputBox("Ingrese el valor a buscar:")
+    
+    ' Búsqueda binaria
+    resultado = BinarySearch(arr, 0, n - 1, valorBuscado)
+    
+    ' Mostrar resultados
+    If resultado <> -1 Then
+        MsgBox "Valor encontrado en la posición: " & resultado + 1
+        ActiveSheet.Cells(resultado + 3, 4).Value = "Valor encontrado"
+    Else
+        MsgBox "Valor no encontrado"
+    End If
+End Sub
+
+Sub InsertionSort(arr() As Integer)
+    Dim n, i, j, key As Integer
+    n = UBound(arr) + 1
+    For i = 1 To n - 1
+        key = arr(i)
+        j = i - 1
+        While j >= 0 And arr(j) > key
+            arr(j + 1) = arr(j)
+            j = j - 1
+        Wend
+        arr(j + 1) = key
+    Next i
+End Sub
+
+Function BinarySearch(arr() As Integer, l As Integer, r As Integer, x As Integer) As Integer
+    Dim mid As Integer
+    While l <= r
+        mid = l + (r - l) \ 2
+        If arr(mid) = x Then
+            BinarySearch = mid
+            Exit Function
+        ElseIf arr(mid) < x Then
+            l = mid + 1
+        Else
+            r = mid - 1
+        End If
+    Wend
+    BinarySearch = -1
+End Function
+
+
+---------------------------------------------------------------------------
+
+
+Private Sub BusquedaLineal_Click()
+    Dim n, i As Integer
+    Dim arr() As Integer
+    Dim valorBuscado As Integer
+    Dim encontrado As Boolean
+    
+    ' Leer tamaño del arreglo ingresado por el usuario
+    n = Range("B1").Value
+    ReDim arr(n - 1)
+    
+    ' Llenar el arreglo con números aleatorios
+    For i = 0 To n - 1
+        arr(i) = Int(100 * Rnd()) + 1
+    Next i
+    
+    ' Mostrar los elementos del arreglo antes de la búsqueda
+    For i = 0 To n - 1
+        ActiveSheet.Cells(i + 3, 3).Value = arr(i)
+    Next i
+    
+    ' Solicitar al usuario el valor a buscar
+    valorBuscado = InputBox("Ingrese el valor a buscar:")
+    encontrado = False
+    
+    ' Búsqueda lineal
+    For i = 0 To n - 1
+        If arr(i) = valorBuscado Then
+            encontrado = True
+            Exit For
+        End If
+    Next i
+    
+    ' Mostrar resultados
+    If encontrado Then
+        MsgBox "Valor encontrado en la posición: " & i + 1
+        ActiveSheet.Cells(i + 3, 4).Value = "Valor encontrado"
+    Else
+        MsgBox "Valor no encontrado"
+    End If
+End Sub
+
+
+---------------------------------------------------------------------------
+
+
+Private Sub MergeSort_click(arr() As Integer, l As Integer, r As Integer)
+    If l < r Then
+        ' Encuentra el punto medio del arreglo
+        Dim m As Integer
+        m = l + (r - l) \ 2
+        
+        ' Ordena la primera y segunda mitad recursivamente
+        MergeSort arr, l, m
+        MergeSort arr, m + 1, r
+        
+        ' Une las mitades ordenadas
+        Merge arr, l, m, r
+    End If
+End Sub
+
+Sub Merge(arr() As Integer, l As Integer, m As Integer, r As Integer)
+    Dim n1 As Integer, n2 As Integer
+    n1 = m - l + 1
+    n2 = r - m
+    
+    ' Crea arreglos temporales
+    Dim leftArr() As Integer, rightArr() As Integer
+    ReDim leftArr(n1 - 1)
+    ReDim rightArr(n2 - 1)
+    
+    ' Copia datos a los arreglos temporales
+    Dim i As Integer, j As Integer
+    For i = 0 To n1 - 1
+        leftArr(i) = arr(l + i)
+    Next i
+    For j = 0 To n2 - 1
+        rightArr(j) = arr(m + 1 + j)
+    Next j
+    
+    ' Combina los arreglos temporales en el arreglo original
+    i = 0
+    j = 0
+    Dim k As Integer
+    k = l
+    While i < n1 And j < n2
+        If leftArr(i) <= rightArr(j) Then
+            arr(k) = leftArr(i)
+            i = i + 1
+        Else
+            arr(k) = rightArr(j)
+            j = j + 1
+        End If
+        k = k + 1
+    Wend
+    
+    ' Copia los elementos restantes de leftArr
+    While i < n1
+        arr(k) = leftArr(i)
+        i = i + 1
+        k = k + 1
+    Wend
+    
+    ' Copia los elementos restantes de rightArr
+    While j < n2
+        arr(k) = rightArr(j)
+        j = j + 1
+        k = k + 1
+    Wend
+End Sub
+
+Sub OrdenarConMergeSort()
+    Dim n, i As Integer
+    Dim arr() As Integer
+    
+    ' Leer tamaño del arreglo ingresado por el usuario
+    n = Range("B1").Value
+    ReDim arr(n - 1)
+    
+    ' Llenar el arreglo con números aleatorios
+    For i = 0 To n - 1
+        arr(i) = Int(100 * Rnd()) + 1
+    Next i
+    
+    ' Mostrar los elementos del arreglo antes de ordenar
+    For i = 0 To n - 1
+        ActiveSheet.Cells(i + 3, 3).Value = arr(i)
+    Next i
+    
+    ' Llamar al método MergeSort para ordenar el arreglo
+    MergeSort arr, 0, n - 1
+    
+    ' Mostrar los elementos del arreglo después de ordenar
+    For i = 0 To n - 1
+        ActiveSheet.Cells(i + 3, 4).Value = arr(i)
+    Next i
+End Sub
+
+
+---------------------------------------------------------------------------
+
+
+Private Sub QuickSort_clik(arr() As Integer, low As Integer, high As Integer)
+    ' Verifica si el índice inferior es menor que el índice superior
+    If low < high Then
+        ' Encuentra el índice de partición
+        Dim pi As Integer
+        pi = Partition(arr, low, high)
+
+        ' Ordena recursivamente los elementos antes y después de la partición
+        QuickSort arr, low, pi - 1
+        QuickSort arr, pi + 1, high
+    End If
+End Sub
+
+Function Partition(arr() As Integer, low As Integer, high As Integer) As Integer
+    Dim pivot As Integer
+    pivot = arr(high) ' Toma el último elemento como pivote
+    Dim i As Integer
+    i = low - 1 ' Índice de los elementos menores que el pivote
+    
+    ' Recorre el arreglo desde el índice bajo hasta el alto menos uno
+    For j = low To high - 1
+        ' Si el elemento actual es menor o igual al pivote
+        If arr(j) <= pivot Then
+            i = i + 1 ' Incrementa el índice de los elementos menores
+            ' Intercambia arr(i) con arr(j)
+            Dim temp As Integer
+            temp = arr(i)
+            arr(i) = arr(j)
+            arr(j) = temp
+        End If
+    Next j
+    
+    ' Intercambia el pivote con el elemento en arr(i + 1)
+    Dim temp As Integer
+    temp = arr(i + 1)
+    arr(i + 1) = arr(high)
+    arr(high) = temp
+    
+    ' Retorna el índice de partición
+    Partition = i + 1
+End Function
+
+Sub OrdenarConQuickSort()
+    Dim n, i As Integer
+    Dim arr() As Integer
+    
+    ' Leer tamaño del arreglo ingresado por el usuario
+    n = Range("B1").Value
+    ReDim arr(n - 1)
+    
+    ' Llenar el arreglo con números aleatorios
+    For i = 0 To n - 1
+        arr(i) = Int(100 * Rnd()) + 1
+    Next i
+    
+    ' Mostrar los elementos del arreglo antes de ordenar
+    For i = 0 To n - 1
+        ActiveSheet.Cells(i + 3, 3).Value = arr(i)
+    Next i
+    
+    ' Llamar al método QuickSort para ordenar el arreglo
+    QuickSort arr, 0, n - 1
+    
+    ' Mostrar los elementos del arreglo después de ordenar
+    For i = 0 To n - 1
+        ActiveSheet.Cells(i + 3, 4).Value = arr(i)
+    Next i
+End Sub
+
+
+
+---------------------------------------------------------------------------
+
+Private Sub InsertionSort_Click()
+    Dim n, i, j, key As Integer
+    Dim arr() As Integer
+    
+    ' Leer tamaño del arreglo ingresado por el usuario
+    n = Range("B1").Value
+    ReDim arr(n - 1)
+    
+    ' Llenar el arreglo con números aleatorios
+    For i = 0 To n - 1
+        arr(i) = Int(100 * Rnd()) + 1
+    Next i
+    
+    ' Mostrar los elementos del arreglo antes de ordenar
+    For i = 0 To n - 1
+        ActiveSheet.Cells(i + 3, 3).Value = arr(i)
+    Next i
+    
+    ' Algoritmo Insertion Sort
+    For i = 1 To n - 1
+        key = arr(i)
+        j = i - 1
+        While j >= 0 And arr(j) > key
+            arr(j + 1) = arr(j)
+            j = j - 1
+        Wend
+        arr(j + 1) = key
+    Next i
+    
+    ' Mostrar los elementos del arreglo después de ordenar
+    For i = 0 To n - 1
+        ActiveSheet.Cells(i + 3, 4).Value = arr(i)
+    Next i
+End Sub
+
+
+---------------------------------------------------------------------------
+
+
+Private Sub SelectionSort_Click()
+    Dim n, i, j, minIdx, temp As Integer
+    Dim arr() As Integer
+
+    ' Leer tamaño del arreglo ingresado por el usuario
+    n = Range("b1").Value
+    ReDim arr(n - 1)
+    
+    ' Llenar el arreglo con números aleatorios
+    For i = 0 To n - 1
+        arr(i) = Int(100 * Rnd()) + 1
+    Next i
+    
+    ' Mostrar los elementos del arreglo antes de ordenar
+    Range("C3").Select
+    For i = 0 To n - 1
+        ActiveSheet.Cells(i + 3, 3).Value = arr(i)
+    Next i
+    
+    ' Algoritmo Selection Sort
+    For i = 0 To n - 2
+        minIdx = i
+        For j = i + 1 To n - 1
+            If arr(j) < arr(minIdx) Then
+                minIdx = j
+            End If
+        Next j
+        If minIdx <> i Then
+            temp = arr(i)
+            arr(i) = arr(minIdx)
+            arr(minIdx) = temp
+        End If
+    Next i
+    
+    ' Mostrar los elementos del arreglo después de ordenar
+    Range("D3").Select
+    For i = 0 To n - 1
+        ActiveSheet.Cells(i + 3, 4).Value = arr(i)
+    Next i
+End Sub
+
+
+
+---------------------------------------------------------------------------
+
+Private Sub Borrar_Click()
+    Range("C3:C" & Cells(Rows.Count, 3).End(xlUp).Row).ClearContents
+End Sub
+
+--------------------------------------------------------------------------
+
+Private Sub Burbujas_Click()
+Dim n, i, j, arr(), paso1, temp As Integer
+    'leer tamanio del arreglo ingresado por el usuario
+    n = Range("b1").Value
+    ReDim arr(n - 1)
+    'Llenar el arreglo con numeros aleatorios
+    For i = o To n - 1
+        arr(i) = Int(100 * Rnd()) + 1
+    Next i
+    'Marca desde que rango se ejecuta el codigo
+    Range("C3").Select
+    'Muestra los elementos del arreglo
+    For i = 0 To n - 1
+        ActiveSheet.Cells(i + 3, 3).Value = arr(i)
+    Next i
+    For i = 0 To n - 1
+        Cells(i + 3, 3).Value = arr(i)
+    Next i
+    'Buble sort
+    For i = 0 To n - 2
+        For j = 0 To n - i - 2
+            If arr(j) > arr(j + 1) Then
+            temp = arr(j)
+            arr(j) = arr(j + 1)
+            arr(j + 1) = temp
+            End If
+        Next j
+    Next i
+    Range("d3").Select
+    For i = 0 To n - 1
+        ActiveSheet.Cells(i + 3, 4).Value = arr(i)
+    Next i
+End Sub
+Private Sub Selection_Click()
+  
+End Sub
+
+
+
+---------------------------------------------------------------------------
+Private Sub Hanoid_Click()
+        Dim cant_movs As Double
+        Dim discos As Double
+        Dim disco_a_mover As Double
+        Dim i As Long
+        Dim j As Long
+        Dim puede_mover As Integer
+        Dim t1 As Long
+        Dim t2 As Long
+        Dim torres(1 To 3, 1 To 10) As Double, cant_discos(1 To 3) As Long
+        
+        ' Pedir y validar cuantos discos colocar en la primer torre
+        discos = InputBox("Ingrese el numro de discos (1-8):")
+        While discos < 1 Or discos > 8
+            discos = InputBox("El numero de discos debe ser mayor a 0 y menor a 9:")
+        Wend
+        
+        ' Inicializar los datos
+        cant_discos(1) = discos
+        cant_discos(2) = 0
+        cant_discos(3) = 0
+        For i = 1 To discos
+            torres(1, i) = discos - i + 1
+        Next i
+        
+        ' Juegar!
+        cant_movs = 0
+        While cant_discos(3) <> discos
+            ' Limpiar las celdas
+            For i = 1 To 3
+                For j = 1 To 10
+                    Cells(j, i).Value = ""
+                Next j
+            Next i
+            
+            ' Dibujar las torres gemelas
+            For i = 1 To 3
+                Cells(1, i).Value = "Torre " & i
+                If cant_discos(i) = 0 Then
+                    Cells(2, i).Value = ""
+                Else
+                    For j = cant_discos(i) To 1 Step -1
+                        Select Case torres(i, j)
+                            Case 1
+                                Cells(j + 1, i).Value = "XX"
+                            Case 2
+                                Cells(j + 1, i).Value = "XXXXXX"
+                            Case 3
+                                Cells(j + 1, i).Value = "XXXXXXXXXX"
+                            Case 4
+                                Cells(j + 1, i).Value = "XXXXXXXXXXXXXX"
+                            Case 5
+                                Cells(j + 1, i).Value = "XXXXXXXXXXXXXXXXXX"
+                            Case 6
+                                Cells(j + 1, i).Value = "XXXXXXXXXXXXXXXXXXXXXX"
+                            Case 7
+                                Cells(j + 1, i).Value = "XXXXXXXXXXXXXXXXXXXXXXXXXX"
+                            Case 8
+                                Cells(j + 1, i).Value = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+                        End Select
+                    Next j
+                End If
+            Next i
+            
+            ' Solicitar movimiento de tarjeta de credito
+            t1 = InputBox("Mover desde la torre (1-3):")
+            t2 = InputBox("hacia la torre (1-3):")
+            If t1 < 1 Or t1 > 3 Or t2 < 1 Or t2 > 3 Then
+                MsgBox "Movimiento invalido"
+            Else
+                If cant_discos(t1) = 0 Then
+                    MsgBox "Movimiento invalido"
+                Else
+                    disco_a_mover = torres(t1, cant_discos(t1))
+                    puede_mover = 1
+                    If cant_discos(t2) <> 0 Then
+                        If torres(t2, cant_discos(t2)) < disco_a_mover Then
+                            puede_mover = 0
+                        End If
+                    End If
+                    If puede_mover Then
+                        cant_movs = cant_movs + 1
+                        cant_discos(t2) = cant_discos(t2) + 1
+                        torres(t2, cant_discos(t2)) = disco_a_mover
+                        cant_discos(t1) = cant_discos(t1) - 1
+                    Else
+                        MsgBox "Movimiento invalido"
+                    End If
+                End If
+            End If
+        Wend
+        
+        ' Mostrar resultado
+        MsgBox "Juego finalizado en " & cant_movs & " movimientos!"
+End Sub
+

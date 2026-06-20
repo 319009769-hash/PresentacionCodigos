@@ -1,0 +1,193 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <iostream> 
+#include <fstream> 
+#include <locale> 
+#include <string>
+#define ENTRADAS 50000
+
+/* Luis Armando Gonzalez Gonzalez */
+
+struct Diccionario {
+    char espaniol[20];
+    char aleman[20];
+    struct Diccionario* siguiente;
+};
+
+struct Diccionario* tablahash[ENTRADAS];
+
+int funcionHash(char*);
+void actualizaArchivo(char*);
+void insertar(char*, char*);
+void buscar(char*);
+void borrarPalabra(char*);
+void verDiccionario();
+void actualizarArchivo();
+
+int funcionHash(char *espaniol) {
+    int hash = 0;
+    int i;
+    for (i = 0; espaniol[i] != '\0'; i++) {
+        hash = (hash + espaniol[i]) % ENTRADAS;
+    }
+    return hash;
+}
+
+void actualizaArchivo(char *archivoNombre) {
+    FILE *archivo = fopen(archivoNombre, "r");
+    if (archivo == NULL) {
+        printf("Error al abrir el archivo.\n");
+        return;
+    }
+
+    char espaniol[20], aleman[20];
+    while (fscanf(archivo, "%s %s", espaniol, aleman) == 2) {
+        insertar(espaniol, aleman);
+    }
+    
+    fclose(archivo);
+    printf("El diccionario se actualizo con exito\n");
+}
+
+void insertar(char *espaniol, char *aleman) {
+    int hash = funcionHash(espaniol);
+    struct Diccionario* nuevo = (struct Diccionario*)malloc(sizeof(struct Diccionario));
+    strcpy(nuevo->espaniol, espaniol);
+    strcpy(nuevo->aleman, aleman);
+    nuevo->siguiente = tablahash[hash];
+    tablahash[hash] = nuevo;
+}
+
+void buscar(char *espaniol) {
+    int hash = funcionHash(espaniol);
+    struct Diccionario* actual = tablahash[hash];
+    
+    while (actual != NULL) {
+        if (strcmp(espaniol, actual->espaniol) == 0) {
+            printf("Espaniol: %s\n", espaniol);
+            printf("Aleman: %s\n", actual->aleman);
+            return;
+        }
+        actual = actual->siguiente;
+    }
+    printf("La palabra '%s' no está en el diccionario.\n", espaniol);
+}
+
+void borrarPalabra(char *espaniol) {
+    int hash = funcionHash(espaniol);
+    struct Diccionario* actual = tablahash[hash];
+    struct Diccionario* anterior = NULL;
+
+    while (actual != NULL) {
+        if (strcmp(espaniol, actual->espaniol) == 0) {
+            if (anterior == NULL) {
+                tablahash[hash] = actual->siguiente;
+            } else {
+                anterior->siguiente = actual->siguiente;
+            }
+            free(actual);
+            printf("La palabra '%s' y su traducción han sido borradas.\n", espaniol);
+            actualizarArchivo(); // Actualizar el archivo después de borrar
+            return;
+        }
+        anterior = actual;
+        actual = actual->siguiente;
+    }
+    printf("La palabra '%s' no está en el diccionario.\n", espaniol);
+}
+
+void verDiccionario() {
+    FILE *archivo = fopen("Diccionario.txt", "r");
+    if (archivo == NULL) {
+        printf("Error al abrir el archivo.\n");
+        return;
+    }
+
+    char espaniol[20], aleman[20];
+    printf("Espaniol  | Aleman\n");
+    while (fscanf(archivo, "%s %s", espaniol, aleman) == 2) {
+        printf("%s       | %s\n", espaniol, aleman);
+    }
+
+    fclose(archivo);
+}
+
+void actualizarArchivo() {
+    FILE *archivo = fopen("Diccionario.txt", "w"); // Abrir en modo de escritura ("w") para sobrescribir
+    if (archivo == NULL) {
+        printf("Error al abrir el archivo.\n");
+        return;
+    }
+
+    for (int i = 0; i < ENTRADAS; i++) {
+        struct Diccionario* actual = tablahash[i];
+        while (actual != NULL) {
+            fprintf(archivo, "%s %s\n", actual->espaniol, actual->aleman);
+            actual = actual->siguiente;
+        }
+    }
+
+    fclose(archivo);
+    printf("El Diccionario se ha actualizado correctamente\n");
+}
+
+int main() {
+    int opcion, i;
+    char palabra[20];
+    
+    for (i = 0; i < ENTRADAS; i++) {
+        tablahash[i] = NULL;
+    }
+
+    // Cargar el diccionario al inicio
+    actualizaArchivo("Diccionario.txt");
+
+    printf("Diccionario Espaniol - Aleman\n");
+
+    do {
+        printf("Opciones del diccionario:\n");
+        printf("1. Ver Diccionario\n");
+        printf("2. Consultar Palabra\n");
+        printf("3. Insertar Palabra\n");
+        printf("4. Borrar Palabra\n");
+        printf("5. Salir\n");
+        printf("Seleccione una opcion: ");
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+            case 1:
+                verDiccionario();
+                break;
+            case 2:
+                printf("Introduzca una palabra en espaniol: ");
+                scanf("%s", palabra);
+                buscar(palabra);
+                break;
+            case 3:
+                printf("Escribe la palabra en espaniol: ");
+                scanf("%s", palabra);
+                char traduccion[20];
+                printf("Escribe su traducción en alemán: ");
+                scanf("%s", traduccion);
+                insertar(palabra, traduccion);
+                actualizarArchivo();
+                break;
+            case 4:
+                printf("Introduzca la palabra en espaniol a borrar: ");
+                scanf("%s", palabra);
+                borrarPalabra(palabra);
+                break;
+            case 5:
+                printf("Saliendo del diccionario\n");
+                break;
+            default:
+                printf("Por favor, seleccione una de las opciones disponibles.\n");
+                break;
+        }
+        
+    } while (opcion != 5);
+
+    return 0;
+}
+
